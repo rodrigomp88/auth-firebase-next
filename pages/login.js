@@ -7,18 +7,19 @@ import Link from "next/link";
 
 export default function Login() {
   const router = useRouter();
+  const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function handleLogin(e) {
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(() => {
         console.log("logged in");
         router.push("/dashboard");
       })
       .catch((error) => {
-        console.log(error);
+        setError(error.message);
       });
   }
 
@@ -30,6 +31,7 @@ export default function Login() {
       </h2>
 
       <form onSubmit={handleLogin}>
+        {error && <p color="danger">{error}</p>}
         <div className="my-2 flex flex-col">
           <label className="text-teal-800 font-bold text-lg tracking-wide">
             Correo
@@ -39,7 +41,7 @@ export default function Login() {
             value={email}
             type="email"
             placeholder="Correo electronico"
-            className="bg-none border-4 border-teal-900 p-1 focus:outline-none rounded-xl font-bold text-teal-900"
+            className="bg-none border-2 border-teal-900 p-1 focus:outline-none rounded-xl font-bold text-teal-900"
           />
           <label className="text-teal-800 font-bold text-lg tracking-wide">
             Contraseña
@@ -49,7 +51,7 @@ export default function Login() {
             value={password}
             type="password"
             placeholder="Contraseña"
-            className="bg-none border-4 border-teal-900 p-1 focus:outline-none rounded-xl font-bold text-teal-900"
+            className="bg-none border-2 border-teal-900 p-1 focus:outline-none rounded-xl font-bold text-teal-900"
           />
           <br />
           <button
